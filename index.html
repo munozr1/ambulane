@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Nafiz Labib EMT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Define the styles for the elements */
+    body {
+      background-color: #ffcccc;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 800px;
+      background-color: #e03019;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #000000;
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-size: 18px;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cc0000;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    input[type="submit"] {
+      background-color: #cc0000;
+      color: #000000;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="submit"]:hover {
+      background-color: #ff6666;
+    }
+
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Nafiz Labib EMT</h1>
+    <form>
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" rows="4" placeholder="Enter your message here..."></textarea>
+      <label for="route">Route:</label>
+      <input type="text" id="route" name="route" placeholder="Enter the route you plan to take...">
+      <button onclick="sendMessage()">Send Message</button>
+    </form>
+    <div id="map"></div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const message = document.getElementById('message').value;
+      const route = document.getElementById('route').value;
+      const TOPIC = 'com.munozcreates.ambulane';
+      const AUTHENTICATION_TOKEN = 'eyAiYWxnIjogIkVTMjU2IiwgImtpZCI6ICI1NVAzVDNBQlE4IiB9.eyAiaXNzIjogIjJIRTc1MjhLMjUiLCAiaWF0IjogMTY4MDQ0MTE4MiB9.MEQCIHEIsXkLK0XVq_hoB3x39FwlH2-LKFuSJnlF31rRGZEsAiBTUVmE2HhWlelkvwuHVg66APdrLsKoIeaoU3jKv1SFHw';
+      const APNS_HOST_NAME = 'api.sandbox.push.apple.com';
+      const DEVICE_TOKEN = 'cd4e0575907e4e219b89800d1e86d9b1fe9ab1`26f5ab20c1d41ad1fdb71cbf9c';
+      const payload = {
+        aps: {
+          alert: 'test',
+        },
+      };
+
+      const headers = {
+        'apns-topic': TOPIC,
+        'apns-push-type': 'alert',
+        'authorization': `bearer ${AUTHENTICATION_TOKEN}`,
+      };
+
+      fetch(`https://${APNS_HOST_NAME}/3/device/${DEVICE_TOKEN}`, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(payload),
+      })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  </script>
+</body>
+
+</html>
